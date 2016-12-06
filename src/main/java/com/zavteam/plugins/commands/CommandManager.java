@@ -110,7 +110,7 @@ public class CommandManager {
                 AutoPacket am = zavAutoMessager.getAutoPacketList().get(iterator);
                 if (am instanceof MessagePacket) {
                     MessagePacket mp = (MessagePacket) am;
-                    message = message + "Node: " + mp.getPermission() + " Message: " + mp.getMessages().get(0);
+                    message = message + "Node: " + mp.getPermission() + " Message:&r " + mp.getMessages().get(0);
                     if (mp.getMessages().size() > 1) {
                         message = message + "...";
                     }
