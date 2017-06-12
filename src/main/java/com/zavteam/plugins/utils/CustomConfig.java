@@ -20,7 +20,7 @@ public class CustomConfig {
 		if (plugin == null)
 			throw new IllegalArgumentException("plugin cannot be null");
 		if (!plugin.isEnabled())
-			throw new IllegalArgumentException("plugin must be initiaized");
+			throw new IllegalArgumentException("plugin must be initialized");
 		this.plugin = plugin;
 		this.fileName = fileName;
 		File dataFolder = plugin.getDataFolder();
@@ -30,14 +30,10 @@ public class CustomConfig {
 	}
 
 	public void reloadConfig() {
-		fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
-
-		// Look for defaults in the jar
-		InputStream defConfigStream = plugin.getResource(fileName);
-		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-			fileConfiguration.setDefaults(defConfig);
+		if (!configFile.exists()) {
+			plugin.saveResource(fileName, true);
 		}
+		fileConfiguration = YamlConfiguration.loadConfiguration(configFile);
 	}
 
 	public FileConfiguration getConfig() {
