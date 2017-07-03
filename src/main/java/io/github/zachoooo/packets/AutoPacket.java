@@ -1,4 +1,4 @@
-package com.zavteam.plugins.packets;
+package io.github.zachoooo.packets;
 
 /**
  * AutoPacket is an abstract class meant to provide guidelines for command packets, message packets,

@@ -1,4 +1,4 @@
-package com.zavteam.plugins.packets;
+package io.github.zachoooo.packets;
 
 import org.bukkit.Bukkit;
 

@@ -1,6 +1,6 @@
-package com.zavteam.plugins.api;
+package io.github.zachoooo.api;
 
-import com.zavteam.plugins.packets.AutoPacket;
+import io.github.zachoooo.packets.AutoPacket;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

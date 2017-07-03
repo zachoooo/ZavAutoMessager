@@ -1,11 +1,11 @@
-package com.zavteam.plugins.commands;
+package io.github.zachoooo.commands;
 
-import com.zavteam.plugins.ZavAutoMessager;
-import com.zavteam.plugins.packets.AutoPacket;
-import com.zavteam.plugins.packets.CommandPacket;
-import com.zavteam.plugins.packets.MessagePacket;
-import com.zavteam.plugins.utils.PluginPM;
-import com.zavteam.plugins.utils.PluginPM.MessageType;
+import io.github.zachoooo.ZavMessage;
+import io.github.zachoooo.packets.AutoPacket;
+import io.github.zachoooo.packets.CommandPacket;
+import io.github.zachoooo.packets.MessagePacket;
+import io.github.zachoooo.utils.PluginPM;
+import io.github.zachoooo.utils.PluginPM.MessageType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,36 +22,36 @@ import java.util.List;
  */
 public class CommandManager {
 
-    private ZavAutoMessager zavAutoMessager;
+    private ZavMessage zavMessage;
     private CommandHandler handler;
 
-    public CommandManager(ZavAutoMessager zavAutoMessager) {
-        this.zavAutoMessager = zavAutoMessager;
+    public CommandManager(ZavMessage zavMessage) {
+        this.zavMessage = zavMessage;
     }
 
     public void enableCommands() {
-        handler = new CommandHandler(zavAutoMessager);
+        handler = new CommandHandler(zavMessage);
         handler.registerCommands(this);
     }
 
     @Command(
             identifier = "automessager",
-            description = "ZavAutoMessager Parent Command",
+            description = "ZavMessage Parent Command",
             onlyPlayers = false,
-            permissions = {"zavautomessager.view", "zavautomessager.*"}
+            permissions = {"zavmessage.view", "zavmessage.*"}
     )
     public void root(CommandSender sender) {
-        zavAutoMessager.getServer().dispatchCommand(sender, "am help 1");
+        zavMessage.getServer().dispatchCommand(sender, "am help 1");
     }
 
     @Command(
             identifier = "automessager reload",
             description = "Reload the plugins messages",
             onlyPlayers = false,
-            permissions = {"zavautomessager.reload", "zavautomessager.*"}
+            permissions = {"zavmessage.reload", "zavmessage.*"}
     )
     public void reload(CommandSender sender) {
-        zavAutoMessager.reload();
+        zavMessage.reload();
         PluginPM.sendMessage(MessageType.INFO, sender, "The plugin has been reloaded.");
     }
 
@@ -59,40 +59,40 @@ public class CommandManager {
             identifier = "automessager toggle",
             description = "Toggle the plugin on and off",
             onlyPlayers = false,
-            permissions = {"zavautomessager.toggle", "zavautomessager.*"}
+            permissions = {"zavmessage.toggle", "zavmessage.*"}
     )
     public void toggle(CommandSender sender) {
-        zavAutoMessager.getMainConfig().getConfig().set("enabled", !zavAutoMessager.getMainConfig().getConfig().getBoolean("enabled"));
-        zavAutoMessager.getMainConfig().saveConfig();
-        zavAutoMessager.getMainConfig().reloadConfig();
-        PluginPM.sendMessage(PluginPM.MessageType.INFO, sender, "Automatic messaging has been set to: " + (zavAutoMessager.getMainConfig().getConfig().getBoolean("enabled") ? "enabled" : "disabled"));
+        zavMessage.getMainConfig().getConfig().set("enabled", !zavMessage.getMainConfig().getConfig().getBoolean("enabled"));
+        zavMessage.getMainConfig().saveConfig();
+        zavMessage.getMainConfig().reloadConfig();
+        PluginPM.sendMessage(PluginPM.MessageType.INFO, sender, "Automatic messaging has been set to: " + (zavMessage.getMainConfig().getConfig().getBoolean("enabled") ? "enabled" : "disabled"));
     }
 
     @Command(
             identifier = "automessager broadcast",
             description = "Broadcast a message using tag formatting",
             onlyPlayers = false,
-            permissions = {"zavautomessager.broadcast", "zavautomessager.*"}
+            permissions = {"zavmessage.broadcast", "zavmessage.*"}
     )
     public void broadcast(
             CommandSender sender,
             @Wildcard @Arg(name = "message") String message
     ) {
-        PluginPM.sendMessage(PluginPM.MessageType.NO_TAG, zavAutoMessager.getMainConfig().getConfig().getString("chatformat").replace("%msg", message));
+        PluginPM.sendMessage(PluginPM.MessageType.NO_TAG, zavMessage.getMainConfig().getConfig().getString("chatformat").replace("%msg", message));
     }
 
     @Command(
             identifier = "automessager list",
             description = "List the messages in the config",
             onlyPlayers = false,
-            permissions = {"zavautomessager.list", "zavautomessager.*"}
+            permissions = {"zavmessage.list", "zavmessage.*"}
     )
     public void list(
             CommandSender sender,
             @Arg(name = "page", verifiers = "min[1]", def = "1") int page
     ) {
         try {
-            zavAutoMessager.getAutoPacketList().get((5 * page) - 5);
+            zavMessage.getAutoPacketList().get((5 * page) - 5);
         } catch (IndexOutOfBoundsException e) {
             sender.sendMessage(ChatColor.RED + "You do not have that any messages on that page");
             return;
@@ -101,13 +101,13 @@ public class CommandManager {
             return;
         }
 
-        sender.sendMessage(ChatColor.GOLD + "ZavAutoMessager Messages Page: " + page);
+        sender.sendMessage(ChatColor.GOLD + "ZavMessage Messages Page: " + page);
         int initialInt = (5 * page) - 5;
         int finalInt = initialInt + 5;
         for (int iterator = initialInt; iterator < finalInt; iterator++) {
             String message = ChatColor.GOLD + Integer.toString(iterator + 1) + ". ";
             try {
-                AutoPacket am = zavAutoMessager.getAutoPacketList().get(iterator);
+                AutoPacket am = zavMessage.getAutoPacketList().get(iterator);
                 if (am instanceof MessagePacket) {
                     MessagePacket mp = (MessagePacket) am;
                     message = message + "Node: " + mp.getPermission() + " Message:&r " + mp.getMessages().get(0);
@@ -131,11 +131,11 @@ public class CommandManager {
             identifier = "automessager ignore",
             description = "Toggle ignoring messages on and off",
             onlyPlayers = true,
-            permissions = {"zavautomessager.ignore", "zavautomessager.*"}
+            permissions = {"zavmessage.ignore", "zavmessage.*"}
     )
     public void ignore(Player sender) {
         List<String> ignorePlayers = new ArrayList<String>();
-        ignorePlayers = zavAutoMessager.getIgnoreConfig().getConfig().getStringList("players");
+        ignorePlayers = zavMessage.getIgnoreConfig().getConfig().getStringList("players");
         boolean added = true;
         if (ignorePlayers.contains(sender.getUniqueId().toString())) {
             added = false;
@@ -143,9 +143,9 @@ public class CommandManager {
         } else {
             ignorePlayers.add(sender.getUniqueId().toString());
         }
-        zavAutoMessager.getIgnoreConfig().getConfig().set("players", ignorePlayers);
-        zavAutoMessager.getIgnoreConfig().saveConfig();
-        zavAutoMessager.getIgnoreConfig().reloadConfig();
+        zavMessage.getIgnoreConfig().getConfig().set("players", ignorePlayers);
+        zavMessage.getIgnoreConfig().saveConfig();
+        zavMessage.getIgnoreConfig().reloadConfig();
         PluginPM.sendMessage(PluginPM.MessageType.INFO, sender, "Ignoring auto messages is: " + (added ? "enabled" : "disabled"));
     }
 

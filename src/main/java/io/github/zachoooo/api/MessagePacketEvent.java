@@ -1,6 +1,6 @@
-package com.zavteam.plugins.api;
+package io.github.zachoooo.api;
 
-import com.zavteam.plugins.packets.MessagePacket;
+import io.github.zachoooo.packets.MessagePacket;
 
 /**
  * Created by Zach on 4/26/14.

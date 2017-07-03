@@ -1,4 +1,4 @@
-package com.zavteam.plugins.utils;
+package io.github.zachoooo.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,7 +17,7 @@ public class PluginPM {
         RAW
 	}
 
-    public static String name = "ZavAutoMessager";
+    public static String name = "ZavMessage";
 	public static Logger log = Bukkit.getLogger();
 	
 	/**

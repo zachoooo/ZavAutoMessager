@@ -1,11 +1,11 @@
-package com.zavteam.plugins;
+package io.github.zachoooo;
 
-import com.zavteam.plugins.api.AutoPacketEvent;
-import com.zavteam.plugins.api.CommandPacketEvent;
-import com.zavteam.plugins.api.MessagePacketEvent;
-import com.zavteam.plugins.packets.AutoPacket;
-import com.zavteam.plugins.packets.CommandPacket;
-import com.zavteam.plugins.packets.MessagePacket;
+import io.github.zachoooo.api.AutoPacketEvent;
+import io.github.zachoooo.api.CommandPacketEvent;
+import io.github.zachoooo.api.MessagePacketEvent;
+import io.github.zachoooo.packets.AutoPacket;
+import io.github.zachoooo.packets.CommandPacket;
+import io.github.zachoooo.packets.MessagePacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -18,27 +18,27 @@ public class AutoPacketRunnable implements Runnable {
 
     private int messageIterator;
     private int previousMessageIndex;
-    private ZavAutoMessager zavAutoMessager;
+    private ZavMessage zavMessage;
 
-    public AutoPacketRunnable(ZavAutoMessager zavAutoMessager) {
-        this.zavAutoMessager = zavAutoMessager;
+    public AutoPacketRunnable(ZavMessage zavMessage) {
+        this.zavMessage = zavMessage;
     }
 
     @Override
     public void run() {
-        if (ZavAutoMessager.getMainConfig().getConfig().getBoolean("enabled", true)) {
-            if (ZavAutoMessager.getMainConfig().getConfig().getBoolean("requireplayersonline") && zavAutoMessager.getServer().getOnlinePlayers().size() == 0) {
+        if (ZavMessage.getMainConfig().getConfig().getBoolean("enabled", true)) {
+            if (ZavMessage.getMainConfig().getConfig().getBoolean("requireplayersonline") && zavMessage.getServer().getOnlinePlayers().size() == 0) {
                 return;
             }
-            boolean randomMessaging = ZavAutoMessager.getMainConfig().getConfig().getBoolean("messageinrandomorder", false);
-            boolean permissions = ZavAutoMessager.getMainConfig().getConfig().getBoolean("permissionsenabled", false);
-            if (zavAutoMessager.getAutoPacketList().size() == 1) {
+            boolean randomMessaging = ZavMessage.getMainConfig().getConfig().getBoolean("messageinrandomorder", false);
+            boolean permissions = ZavMessage.getMainConfig().getConfig().getBoolean("permissionsenabled", false);
+            if (zavMessage.getAutoPacketList().size() == 1) {
                 messageIterator = 0;
             } else if (randomMessaging) {
                 messageIterator = getRandomMessage();
             }
 
-            AutoPacket autoPacket = zavAutoMessager.getAutoPacketList().get(messageIterator);
+            AutoPacket autoPacket = zavMessage.getAutoPacketList().get(messageIterator);
             AutoPacketEvent autoPacketEvent = null;
 
             if (autoPacket instanceof CommandPacket) {
@@ -50,13 +50,13 @@ public class AutoPacketRunnable implements Runnable {
                 MessagePacketEvent messagePacketEvent = (MessagePacketEvent) autoPacketEvent;
                 if (permissions && messagePacket.getPermission() != null && !messagePacket.getPermission().equalsIgnoreCase("default")) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (player.hasPermission(messagePacket.getPermission()) && !ZavAutoMessager.getIgnoreConfig().getConfig().getStringList("players").contains(player.getUniqueId().toString()) && !player.hasPermission("zavautomessager.ignoregroup")) {
+                        if (player.hasPermission(messagePacket.getPermission()) && !ZavMessage.getIgnoreConfig().getConfig().getStringList("players").contains(player.getUniqueId().toString()) && !player.hasPermission("zavautomessager.ignoregroup")) {
                             messagePacket.getPlayers().add(player.getUniqueId());
                         }
                     }
                 } else {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        if (!ZavAutoMessager.getIgnoreConfig().getConfig().getStringList("players").contains(player.getUniqueId().toString())) {
+                        if (!ZavMessage.getIgnoreConfig().getConfig().getStringList("players").contains(player.getUniqueId().toString())) {
                             messagePacket.getPlayers().add(player.getUniqueId());
                         }
                     }
@@ -71,7 +71,7 @@ public class AutoPacketRunnable implements Runnable {
 
             autoPacket.processPacket();
 
-            if (++messageIterator == zavAutoMessager.getAutoPacketList().size()) {
+            if (++messageIterator == zavMessage.getAutoPacketList().size()) {
                 messageIterator = 0;
             }
 
@@ -81,15 +81,15 @@ public class AutoPacketRunnable implements Runnable {
 
     private int getRandomMessage() {
         Random random = new Random();
-        if (ZavAutoMessager.getMainConfig().getConfig().getBoolean("dontrepeatrandommessages", true)) {
-            int i = random.nextInt(zavAutoMessager.getAutoPacketList().size());
+        if (ZavMessage.getMainConfig().getConfig().getBoolean("dontrepeatrandommessages", true)) {
+            int i = random.nextInt(zavMessage.getAutoPacketList().size());
             if ((i != previousMessageIndex)) {
                 previousMessageIndex = i;
                 return i;
             }
             return getRandomMessage();
         }
-        return random.nextInt(zavAutoMessager.getAutoPacketList().size());
+        return random.nextInt(zavMessage.getAutoPacketList().size());
     }
 
 }

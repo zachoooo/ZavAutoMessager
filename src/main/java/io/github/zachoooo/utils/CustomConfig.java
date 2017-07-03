@@ -1,4 +1,4 @@
-package com.zavteam.plugins.utils;
+package io.github.zachoooo.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,9 +18,9 @@ public class CustomConfig {
 
 	public CustomConfig(JavaPlugin plugin, String fileName) {
 		if (plugin == null)
-			throw new IllegalArgumentException("plugin cannot be null");
+			throw new IllegalArgumentException("Plugin cannot be null");
 		if (!plugin.isEnabled())
-			throw new IllegalArgumentException("plugin must be initialized");
+			throw new IllegalArgumentException("Plugin must be initialized");
 		this.plugin = plugin;
 		this.fileName = fileName;
 		File dataFolder = plugin.getDataFolder();

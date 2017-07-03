@@ -1,4 +1,4 @@
-name: ZavAutoMessager
+name: ZavMessage
 
 version: ${project.version}
 
@@ -6,9 +6,7 @@ description: Automatically send predefined messages to the server.
 
 author: zachoooo
 
-authors: [javoris767]
-
-main: com.zavteam.plugins.ZavAutoMessager
+main: io.github.zachoooo.ZavMessage
 
 commands:
     automessager:

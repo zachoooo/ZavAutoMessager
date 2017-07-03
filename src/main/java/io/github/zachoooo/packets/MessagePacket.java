@@ -1,8 +1,7 @@
-package com.zavteam.plugins.packets;
+package io.github.zachoooo.packets;
 
-import com.zavteam.plugins.ZavAutoMessager;
-import com.zavteam.plugins.utils.PluginPM;
-import com.zavteam.plugins.utils.PluginPM.MessageType;
+import io.github.zachoooo.ZavMessage;
+import io.github.zachoooo.utils.PluginPM;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -118,20 +117,27 @@ public class MessagePacket extends AutoPacket {
         ChatColor[] COLOR_LIST = {ChatColor.AQUA, ChatColor.BLACK, ChatColor.BLUE, ChatColor.DARK_AQUA, ChatColor.DARK_BLUE, ChatColor.DARK_GRAY,
                 ChatColor.DARK_GREEN, ChatColor.DARK_PURPLE, ChatColor.DARK_RED, ChatColor.GOLD, ChatColor.GRAY, ChatColor.GREEN, ChatColor.LIGHT_PURPLE,
                 ChatColor.RED, ChatColor.YELLOW};
+        boolean firstLine = true;
         for (String message : messages) {
             for (UUID uuid : players) {
                 OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
                 if (offlinePlayer.isOnline()) {
                     Player player = (Player) offlinePlayer;
-                    String tag = ZavAutoMessager.getMainConfig().getConfig().getString("chatformat");
-                    tag = ChatColor.translateAlternateColorCodes('&', tag);
-                    tag = tag.replace("%msg", message);
+                    String tag = "";
+                    if (firstLine) {
+                        tag = ZavMessage.getMainConfig().getConfig().getString("chatformat");
+                        tag = ChatColor.translateAlternateColorCodes('&', tag);
+                        tag = tag.replace("%msg", message);
+                        firstLine = false;
+                    } else {
+                        tag = message;
+                    }
                     Random random = new Random();
                     tag = tag.replace("%r", COLOR_LIST[random.nextInt(COLOR_LIST.length)].toString());
-                    PluginPM.sendMessage(MessageType.NO_TAG, player, tag);
+                    PluginPM.sendMessage(PluginPM.MessageType.NO_TAG, player, tag);
                 }
             }
-            if (ZavAutoMessager.getMainConfig().getConfig().getBoolean("messagesinconsole")) {
+            if (ZavMessage.getMainConfig().getConfig().getBoolean("messagesinconsole")) {
                 PluginPM.sendMessage(Level.INFO, message);
             }
         }

@@ -1,11 +1,11 @@
-package com.zavteam.plugins;
+package io.github.zachoooo;
 
-import com.zavteam.plugins.commands.CommandManager;
-import com.zavteam.plugins.packets.AutoPacket;
-import com.zavteam.plugins.packets.CommandPacket;
-import com.zavteam.plugins.packets.MessagePacket;
-import com.zavteam.plugins.utils.CustomConfig;
-import com.zavteam.plugins.utils.PluginPM;
+import io.github.zachoooo.commands.CommandManager;
+import io.github.zachoooo.packets.AutoPacket;
+import io.github.zachoooo.packets.CommandPacket;
+import io.github.zachoooo.packets.MessagePacket;
+import io.github.zachoooo.utils.CustomConfig;
+import io.github.zachoooo.utils.PluginPM;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.logging.Level;
  * Not doing the aforementioned is what made this re-write required.
  * Keep code as modular as possible.
  */
-public class ZavAutoMessager extends JavaPlugin {
+public class ZavMessage extends JavaPlugin {
 
     List<AutoPacket> autoPacketList = new ArrayList<AutoPacket>();
 
@@ -36,6 +36,8 @@ public class ZavAutoMessager extends JavaPlugin {
     private static CustomConfig ignoreConfig;
 
     public void onEnable() {
+        PluginPM.sendMessage(Level.INFO, "================== ZavMessage ==================");
+        PluginPM.sendMessage(Level.INFO, "Loading configs...");
         mainConfig = new CustomConfig(this, "config.yml");
         ignoreConfig = new CustomConfig(this, "ignore.yml");
         mainConfig.saveDefaultConfig();
@@ -43,14 +45,25 @@ public class ZavAutoMessager extends JavaPlugin {
         mainConfig.reloadConfig();
         ignoreConfig.reloadConfig();
         loadMessages();
+        PluginPM.sendMessage(Level.INFO, "Reading messages from config...");
         if (autoPacketList.size() < 1) {
             PluginPM.sendMessage(Level.SEVERE, "No messages could be loaded. Disabling plugin.");
             setEnabled(false);
             return;
         }
+        PluginPM.sendMessage(Level.INFO, "Message list read!");
         commandManager.enableCommands();
         getServer().getScheduler().cancelTasks(this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoPacketRunnable(this), 0L, ((long) mainConfig.getConfig().getInt("delay") * 20));
+        PluginPM.sendMessage(Level.INFO, "ZavMessage has loaded!");
+        PluginPM.sendMessage(Level.INFO, "Like this plugin? Consider donating towards development!");
+        PluginPM.sendMessage(Level.INFO, "PayPal: zachoooo@gmail.com");
+        PluginPM.sendMessage(Level.INFO, "Bitcoin: 16L1XuGXNbbNwfS9J3g49QnC22VhgYTn2G");
+        PluginPM.sendMessage(Level.INFO, "Ethereum: 0xCd57A4abf36f20a3A68C4624Fefeea8FABa91812");
+        PluginPM.sendMessage(Level.INFO, "Litecoin: MDBjepGGBLYhMep76bHaSLsnM6xgBW8erm");
+        PluginPM.sendMessage(Level.INFO, "Dash: XmoKNLiL7kUZJ4ShLkELY7guaPGxFHqG75");
+        PluginPM.sendMessage(Level.INFO, "ZCash: t1K2YitrCTWE3L1Vq5ByW1vtYAB333AxkQG");
+        PluginPM.sendMessage(Level.INFO, "================================================");
     }
 
     public void onDisable() {
