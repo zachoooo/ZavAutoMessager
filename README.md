@@ -12,11 +12,17 @@ Want to help out? Fork me on Gitub.
 Donations of any kind are always appreciated.
 
 Paypal: [zachoooo@gmail.com](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GXWENBDK2YDYA)
+
 Bitcoin: 16L1XuGXNbbNwfS9J3g49QnC22VhgYTn2G
+
 Ethereum: 0xCd57A4abf36f20a3A68C4624Fefeea8FABa91812
+
 Litecoin: MDBjepGGBLYhMep76bHaSLsnM6xgBW8erm
+
 Dash: XmoKNLiL7kUZJ4ShLkELY7guaPGxFHqG75
+
 ZCash: t1K2YitrCTWE3L1Vq5ByW1vtYAB333AxkQG
+
 [Other Altcoins?](https://shapeshift.io/shifty.html?destination=16L1XuGXNbbNwfS9J3g49QnC22VhgYTn2G&amp;output=BTC)
 
 ## Building
