@@ -20,6 +20,8 @@ requireplayersonline: true
 
 dontrepeatrandommessages: true
 
+suppressconsoleads: false # Remove ads linking to developers donation info
+
 messages:
     default:
     - '&6Example Message'
